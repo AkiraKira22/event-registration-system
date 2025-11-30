@@ -6,13 +6,8 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <h1>Event Registration Dashboard</h1>
-
-    <div class="dashboard-buttons">
-        <a href="event/event_list.php" class="btn">Event List</a>
-        <a href="participant/participant_list.php" class="btn">Participant List</a>
-    </div>
-
+    <a href="admin/login.php" class="btn">Admin Login</a>
+    <a href="participant/login.php" class="btn">Participant Login</a>
 </body>
 </html>
