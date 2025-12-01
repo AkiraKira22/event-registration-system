@@ -34,13 +34,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h1>Edit Event</h1>
-<form method="post">
-    <input type="text" name="name" value="<?= htmlspecialchars($event['name']); ?>" required>
-    <textarea name="description" required><?= htmlspecialchars($event['description']); ?></textarea>
-    <input type="date" name="start_date" value="<?= $event['start_date']; ?>" required>
-    <input type="date" name="end_date" value="<?= $event['end_date']; ?>" required>
-    <input type="text" name="location" value="<?= htmlspecialchars($event['location']); ?>" required>
-    <button type="submit">Update Event</button>
-</form>
-<a href="manage_events.php">Back</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Event</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Edit Event</h1>
+
+    <form method="post">
+        <input type="text" name="name" value="<?= htmlspecialchars($event['name']); ?>" placeholder="Event Name" required>
+        <textarea name="description" placeholder="Description" required><?= htmlspecialchars($event['description']); ?></textarea>
+        <input type="date" name="start_date" value="<?= $event['start_date']; ?>" required>
+        <input type="date" name="end_date" value="<?= $event['end_date']; ?>" required>
+        <input type="text" name="location" value="<?= htmlspecialchars($event['location']); ?>" placeholder="Location" required>
+        <button type="submit">Update Event</button>
+    </form>
+
+    <a class="btn" href="manage_events.php">Back</a>
+
+</div>
+
+</body>
+</html>

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_insert = $conn->prepare("INSERT INTO participant (name, email, phone_number, password) VALUES (?, ?, ?, ?)");
             $stmt_insert->bind_param("ssss", $name, $email, $phone_number, $hash);
             if ($stmt_insert->execute()) {
-                $success = "Participant account created successfully! <a href='login.php'>Login here</a>.";
+                $success = "Participant account created successfully! <a class='link' href='login.php'>Login here</a>.";
             }
             else {
                 $error = "Error creating participant account: " . $conn->error;
@@ -51,10 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
+
+<div class="container">
     <h1>Register Participant Account</h1>
 
-    <?php if ($error) echo "<p style='color:red;'>$error</p>"; ?>
-    <?php if ($success) echo "<p style='color:green;'>$success</p>"; ?>
+    <?php if ($error) echo "<p class='error'>$error</p>"; ?>
+    <?php if ($success) echo "<p class='success'>$success</p>"; ?>
 
     <?php if (!$success): ?>
     <form method="post">
@@ -67,7 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
     <?php endif; ?>
 
-    <p>Already have an account? <a href="login.php">Login here</a></p>
-    <p><a href="../dashboard.php">Back to main dashboard</a></p>
+    <p>Already have an account? <a class="link" href="login.php">Login here</a></p>
+    <p><a class="link" href="../dashboard.php">Back to main dashboard</a></p>
+</div>
+
 </body>
 </html>

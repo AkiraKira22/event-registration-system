@@ -45,9 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
+
+<div class="container">
+
     <h1>Register Admin Account</h1>
-    <?php if ($error) echo "<p style='color:red;'>$error</p>"; ?>
-    <?php if ($success) echo "<p style='color:green;'>$success</p>"; ?>
+
+    <?php if ($error) echo "<p class='error'>$error</p>"; ?>
+    <?php if ($success) echo "<p class='success'>$success</p>"; ?>
+
     <?php if (!$success): ?>
     <form method="post">
         <input type="email" name="email" placeholder="Email" required>
@@ -56,6 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Create Admin</button>
     </form>
     <?php endif; ?>
-    <p>Already have an account? <a href="login.php">Login here</a></p>
+
+    <p>Already have an account? <a class="link" href="login.php">Login here</a></p>
+    <p><a class="btn" href="../dashboard.php">Back to Main Dashboard</a></p>
+
+</div>
+
 </body>
 </html>

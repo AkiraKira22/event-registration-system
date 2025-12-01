@@ -11,7 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $end = $_POST['end_date'];
     $location = $_POST['location'];
 
-    $stmt = $conn->prepare("INSERT INTO event (name, description, start_date, end_date, location) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("
+        INSERT INTO event (name, description, start_date, end_date, location)
+        VALUES (?, ?, ?, ?, ?)
+    ");
     $stmt->bind_param("sssss", $name, $description, $start, $end, $location);
     $stmt->execute();
     $stmt->close();
@@ -21,13 +24,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h1>Add Event</h1>
-<form method="post">
-    <input type="text" name="name" placeholder="Event Name" required>
-    <textarea name="description" placeholder="Description" required></textarea>
-    <input type="date" name="start_date" required>
-    <input type="date" name="end_date" required>
-    <input type="text" name="location" placeholder="Location" required>
-    <button type="submit">Add Event</button>
-</form>
-<a href="manage_events.php">Back</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Event</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Add Event</h1>
+
+    <form method="post">
+        <input type="text" name="name" placeholder="Event Name" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <input type="date" name="start_date" required>
+        <input type="date" name="end_date" required>
+        <input type="text" name="location" placeholder="Location" required>
+
+        <button type="submit">Add Event</button>
+    </form>
+
+    <br>
+    <a class="btn" href="manage_events.php">Back</a>
+
+</div>
+
+</body>
+</html>

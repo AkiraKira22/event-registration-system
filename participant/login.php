@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,13 +32,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
+
+<div class="container">
     <h1>Login Participant Account</h1>
+
     <form method="post">
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <?php if(!empty($error)) echo "<p>$error</p>"; ?>
-    <p>Don't have an account? <a href="register.php">Register here</a></p>
-    <p><a href="../dashboard.php">Back to main dashboard</a></p>
+
+    <?php if(!empty($error)) echo "<p class='error'>$error</p>"; ?>
+
+    <p>Don't have an account? <a class="link" href="register.php">Register here</a></p>
+    <p><a class="link" href="../dashboard.php">Back to main dashboard</a></p>
+</div>
+
 </body>
+</html>

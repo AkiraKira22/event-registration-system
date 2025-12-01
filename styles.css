@@ -1,0 +1,118 @@
+/* ========== GLOBAL SETTINGS ========== */
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    text-align: center; /* centers text and inline elements */
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto; /* center UL */
+}
+
+/* ========== PAGE CONTAINER ========== */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.08);
+    text-align: center; /* center all content inside */
+}
+
+/* ========== BUTTONS ========== */
+button, .btn {
+    display: inline-block;
+    background: #0066cc;
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover, .btn:hover {
+    background: #004d99;
+}
+
+/* ========== FORMS ========== */
+form {
+    margin-top: 15px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* ========== LIST ITEMS ========== */
+li {
+    background: #ffffff;
+    padding: 15px;
+    margin: 10px auto; /* ensure list items are centered */
+    border-radius: 6px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.05);
+    max-width: 500px;
+    text-align: center;
+}
+
+/* ========== LABELS / SMALL TEXT ========== */
+p {
+    color: #555;
+}
+
+/* Status colors */
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+/* ========== LINKS AS COLORED TEXT ========== */
+.link {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.link:hover {
+    color: #004d99;
+    text-decoration: none;
+}
+
+.link-danger {
+    color: #cc0000;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.link-danger:hover {
+    color: #990000;
+    text-decoration: none;
+}

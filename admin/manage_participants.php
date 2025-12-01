@@ -7,6 +7,7 @@ include("../conn.php");
 // Fetch participants
 $result = $conn->query("SELECT * FROM participant ORDER BY name ASC");
 $participants = [];
+
 while ($row = $result->fetch_assoc()) {
     $participant_id = $row['participant_id'];
 
@@ -21,6 +22,7 @@ while ($row = $result->fetch_assoc()) {
     $stmt->bind_param("i", $participant_id);
     $stmt->execute();
     $res = $stmt->get_result();
+
     $events = [];
     while ($event_row = $res->fetch_assoc()) {
         $events[] = $event_row['name'];
@@ -32,26 +34,44 @@ while ($row = $result->fetch_assoc()) {
 }
 ?>
 
-<h1>Manage Participants</h1>
-<a href="add_participant.php">Add Participant</a>
-<a href="dashboard.php">Back to Dashboard</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Participants</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
 
-<ul>
-<?php foreach($participants as $p): ?>
-    <li>
-        <h3><?= htmlspecialchars($p['name']); ?></h3>
-        <p>Email: <?= htmlspecialchars($p['email']); ?> | Phone: <?= htmlspecialchars($p['phone_number']); ?></p>
-        <p>Registered Events: 
-            <?php 
-            if (!empty($p['registered_events'])) {
-                echo implode(", ", array_map('htmlspecialchars', $p['registered_events']));
-            } else {
-                echo "None";
-            }
-            ?>
-        </p>
-        <a href="edit_participant.php?participant_id=<?= $p['participant_id']; ?>">Edit</a>
-        <a href="delete_participant.php?participant_id=<?= $p['participant_id']; ?>" onclick="return confirm('Delete this participant?')">Delete</a>
-    </li>
-<?php endforeach; ?>
-</ul>
+<div class="container">
+
+    <h1>Manage Participants</h1>
+
+    <p>
+        <a class="btn" href="add_participant.php">Add Participant</a>
+        <a class="btn" href="dashboard.php">Back to Dashboard</a>
+    </p>
+
+    <ul>
+    <?php foreach($participants as $p): ?>
+        <li>
+            <h3><?= htmlspecialchars($p['name']); ?></h3>
+            <p>Email: <?= htmlspecialchars($p['email']); ?> | Phone: <?= htmlspecialchars($p['phone_number']); ?></p>
+            <p><strong>Registered Events:</strong>
+                <?php 
+                    if (!empty($p['registered_events'])) {
+                        echo implode(", ", array_map('htmlspecialchars', $p['registered_events']));
+                    } else {
+                        echo "None";
+                    }
+                ?>
+            </p>
+            <a class="link" href="edit_participant.php?participant_id=<?= $p['participant_id']; ?>">Edit</a>
+            <a class="link-danger" href="delete_participant.php?participant_id=<?= $p['participant_id']; ?>" onclick="return confirm('Delete this participant?')">Delete</a>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+
+</div>
+
+</body>
+</html>

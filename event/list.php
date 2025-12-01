@@ -7,18 +7,40 @@ $events = [];
 while($row = $result->fetch_assoc()) $events[] = $row;
 ?>
 
-<h1>Upcoming Events</h1>
-<ul>
-<?php foreach($events as $event): ?>
-    <li>
-        <a href="detail.php?event_id=<?= $event['event_id']; ?>"><?= htmlspecialchars($event['name']); ?></a>
-    </li>
-<?php endforeach; ?>
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upcoming Events</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="container">
 
-<?php if(isset($_SESSION['participant_id'])): ?>
-    <a href="../participant/my_events.php">My Registered Events</a>
-<?php else: ?>
-    <a href="../participant/login.php">Participant Login</a>
-<?php endif; ?>
-<a href="../participant/dashboard.php">Back to Dashboard</a>
+    <h1>Upcoming Events</h1>
+    
+    <ul>
+    <?php foreach($events as $event): ?>
+        <li>
+            <a class="link" href="detail.php?event_id=<?= $event['event_id']; ?>">
+                <?= htmlspecialchars($event['name']); ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+
+    <p>
+    <?php if(isset($_SESSION['participant_id'])): ?>
+        <a class="link" href="../participant/my_events.php">My Registered Events</a>
+    <?php else: ?>
+        <a class="link" href="../participant/login.php">Participant Login</a>
+    <?php endif; ?>
+    </p>
+
+    <p>
+        <a class="link" href="../participant/dashboard.php">Back to Dashboard</a>
+    </p>
+
+</div>
+</body>
+</html>

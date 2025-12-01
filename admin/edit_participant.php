@@ -33,11 +33,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h1>Edit Participant</h1>
-<form method="post">
-    <input type="text" name="name" value="<?= htmlspecialchars($participant['name']); ?>" required>
-    <input type="email" name="email" value="<?= htmlspecialchars($participant['email']); ?>" required>
-    <input type="text" name="phone" value="<?= htmlspecialchars($participant['phone_number']); ?>">
-    <button type="submit">Update Participant</button>
-</form>
-<a href="manage_participants.php">Back</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Participant</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Edit Participant</h1>
+
+    <form method="post">
+        <input type="text" name="name" value="<?= htmlspecialchars($participant['name']); ?>" placeholder="Full Name" required>
+        <input type="email" name="email" value="<?= htmlspecialchars($participant['email']); ?>" placeholder="Email" required>
+        <input type="text" name="phone" value="<?= htmlspecialchars($participant['phone_number']); ?>" placeholder="Phone Number">
+        <button type="submit">Update Participant</button>
+    </form>
+
+    <a class="btn" href="manage_participants.php">Back</a>
+
+</div>
+
+</body>
+</html>
