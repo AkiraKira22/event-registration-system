@@ -5,6 +5,7 @@ include "../conn.php";
 $error = "";
 $success = "";
 
+// Handle register form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -21,13 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
             $error = "Email already registered. Use another email.";
-        } else {
+        }
+        else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $stmt_insert = $conn->prepare("INSERT INTO admin (email, password) VALUES (?, ?)");
             $stmt_insert->bind_param("ss", $email, $hash);
             if ($stmt_insert->execute()) {
                 $success = "Admin account created successfully! <a href='login.php'>Login here</a>.";
-            } else {
+            }
+            else {
                 $error = "Error creating admin account: " . $conn->error;
             }
             $stmt_insert->close();
@@ -45,14 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-
-<div class="container">
-
-    <h1>Register Admin Account</h1>
-
+<div class="container" style="width: 500px;">
+    <h1>Register</h1>
     <?php if ($error) echo "<p class='error'>$error</p>"; ?>
     <?php if ($success) echo "<p class='success'>$success</p>"; ?>
-
     <?php if (!$success): ?>
     <form method="post">
         <input type="email" name="email" placeholder="Email" required>
@@ -60,12 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="confirm_password" placeholder="Confirm Password" required>
         <button type="submit">Create Admin</button>
     </form>
-    <?php endif; ?>
-
     <p>Already have an account? <a class="link" href="login.php">Login here</a></p>
-    <p><a class="btn" href="../dashboard.php">Back to Main Dashboard</a></p>
-
+    <p><a class="btn" href="../dashboard.php">Cancel</a></p>
+    <?php endif; ?>
 </div>
-
 </body>
 </html>

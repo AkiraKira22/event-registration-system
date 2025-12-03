@@ -2,15 +2,34 @@
 session_start();
 include "../conn.php";
 
+if(!isset($_SESSION['admin_id'])) {
+    header("Location: ../admin/login.php");
+    exit;
+}
+
 $event_id = $_GET['event_id'];
+
+// Fetch Event Details
 $stmt = $conn->prepare("SELECT * FROM event WHERE event_id = ?");
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
-$result = $stmt->get_result();
-$event = $result->fetch_assoc();
+$event = $stmt->get_result()->fetch_assoc();
 $stmt->close();
+if (!$event) {
+    die("Event not found");
+}
 
-if (!$event) die("Event not found");
+// Fetch participants
+$participants_fetch = $conn->query("SELECT * FROM participant ORDER BY name ASC");
+$all_participants = [];
+while($row = $participants_fetch->fetch_assoc()) $all_participants[] = $row;
+
+// Fetch registered users
+$reg_sql = "SELECT p.name, p.email, p.participant_id, r.registration_date FROM registration r JOIN participant p ON r.participant_id = p.participant_id WHERE r.event_id = $event_id";
+$reg_result = $conn->query($reg_sql);
+$registered_users = [];
+
+while($row = $reg_result->fetch_assoc()) $registered_users[] = $row;
 ?>
 
 <!DOCTYPE html>
@@ -21,28 +40,80 @@ if (!$event) die("Event not found");
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
+<nav class="navbar">
+    <div class="navbar-menu">
+        <a href="../admin/manage_registration.php">Back to Registration List</a>
+        <a href="../admin/logout.php" class="logout-btn">Logout</a>
+    </div>
+</nav>
 <div class="container">
-
     <h1><?= htmlspecialchars($event['name']); ?></h1>
-    <p><?= htmlspecialchars($event['description']); ?></p>
-    <p><strong>Date:</strong> <?= $event['start_date']; ?> → <?= $event['end_date']; ?></p>
-    <p><strong>Location:</strong> <?= htmlspecialchars($event['location']); ?></p>
-
-    <?php if(isset($_SESSION['participant_id'])): ?>
-        <form method="post" action="register_participant.php">
-            <input type="hidden" name="event_id" value="<?= $event_id; ?>">
-            <button type="submit">Register for this event</button>
-        </form>
-    <?php else: ?>
-        <p><a class="link" href="../participant/login.php">Login to register</a></p>
-    <?php endif; ?>
-
+    <div style="text-align: left; margin-bottom: 20px;">
+        <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($event['description'])); ?></p>
+        <p><strong>Date:</strong> <?= $event['start_date']; ?> → <?= $event['end_date']; ?></p>
+        <p><strong>Location:</strong> <?= htmlspecialchars($event['location']); ?></p>
+    </div>
+    <hr>
+    <h3>Register a Participant</h3>
+    <form method="post" action="register_participant.php">
+        <input type="hidden" name="event_id" value="<?= $event_id; ?>">
+        <label>Select Participant:</label>
+        <select name="participant_id" required>
+            <option value="">Choose a Person</option>
+            <?php foreach($all_participants as $p): ?>
+                <option value="<?= $p['participant_id']; ?>">
+                    <?= htmlspecialchars($p['name']); ?> (<?= htmlspecialchars($p['email']); ?>)
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <button type="submit">Add to Event</button>
+    </form>
+    <hr>
+    <h3>Current Attendee List</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Registration Time</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if(empty($registered_users)): ?>
+                <tr><td colspan="4" style="text-align:center;">No attendees yet.</td></tr>
+            <?php else: ?>
+                <?php foreach($registered_users as $u): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($u['name']); ?></td>
+                        <td><?= htmlspecialchars($u['email']); ?></td>
+                        <td><?= $u['registration_date']; ?></td>
+                        <td class="action-links">
+                            <a class="link-danger" 
+                               href="delete_registration.php?event_id=<?= $event_id; ?>&participant_id=<?= $u['participant_id']; ?>" 
+                               onclick="return confirm('Deregister <?= htmlspecialchars($u['name']); ?> from this event?')"
+                            >Deregister</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
     <?php if(isset($_GET['success'])): ?>
-        <p class="success">Successfully registered!</p>
+        <?php 
+            $success_message = '';
+
+            if ($_GET['success'] === 'Deregistration successful') {
+                $success_message = 'Participant successfully removed from the event.';
+            }
+            else {
+                $success_message = 'Participant successfully added to the event!';
+            }
+        ?>
+        <p class="success"><?= $success_message; ?></p>
+    <?php elseif(isset($_GET['error'])): ?>
+        <p class="error"><?= htmlspecialchars($_GET['error']); ?></p>
     <?php endif; ?>
-
-    <p><a class="link" href="list.php">Back to Event List</a></p>
-
 </div>
 </body>
 </html>

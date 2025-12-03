@@ -1,23 +1,37 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_id'])) header("Location: login.php");
+include "../conn.php";
+
+if(!isset($_SESSION['admin_id'])) {
+    header("Location: ../admin/login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-
+    <nav class="navbar">
+        <div class="navbar-menu">
+            <div class="dropdown">
+                <button class="dropbtn">Navigate</button>
+                <div class="dropdown-content">
+                    <a href="manage_event.php">Manage Events</a>
+                    <a href="manage_participant.php">Manage Participants</a>
+                    <a href="manage_registration.php">Register Participant</a>
+                </div>
+            </div>
+            <a href="logout.php" class="logout-btn">Logout</a>
+        </div>
+    </nav>
 <div class="container">
-
-    <h1>Admin Dashboard</h1><a class="btn" href="manage_events.php">Manage Events</a>
-    <a class="btn" href="manage_participants.php">Manage Participants</a>
-    <a class="link-danger" href="logout.php">Logout</a>
-
+    <h1>Welcome!!!</h1>
+    <p>Use the navigation above to manage events and participants.</p>
 </div>
-
 </body>
 </html>

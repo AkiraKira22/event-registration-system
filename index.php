@@ -28,10 +28,9 @@ $sql = "CREATE TABLE IF NOT EXISTS admin (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 )";
-
 if (!$conn->query($sql)) die("Error creating admin table: " . $conn->error);
 
-// Create registration table (after participant and event to ensure FK works)
+// Create registration table
 $sql = "CREATE TABLE IF NOT EXISTS registration (
     registration_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     event_id INT UNSIGNED NOT NULL,
