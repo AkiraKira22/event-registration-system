@@ -23,10 +23,12 @@ if($stmt_check->get_result()->num_rows > 0){
 $stmt = $conn->prepare("INSERT INTO registration (event_id, participant_id) VALUES (?, ?)");
 $stmt->bind_param("ii", $event_id, $participant_id);
 if($stmt->execute()){
-    header("Location: add_participant.php?event_id=$event_id&success=1");
+    $_SESSION['success'] = "Participant successfully added!";
 }
 else {
-    header("Location: add_participant.php?event_id=$event_id&error=Database Error");
+    $_SESSION['error'] = "Could not register participant.";
 }
+
+header("Location: add_participant.php?event_id=$event_id");
 exit;
 ?>

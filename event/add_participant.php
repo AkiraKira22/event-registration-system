@@ -61,11 +61,15 @@ while($row = $participants_fetch->fetch_assoc()) {
                 </option>
             <?php endforeach; ?>
         </select>
-        <?php if(isset($_GET['success'])): ?>
-            <p class="success" style="text-align: center;">Participant successfully added!</p>
-        <?php elseif(isset($_GET['error'])): ?>
-            <p class="error"><?= htmlspecialchars($_GET['error']); ?></p>
+        <?php if(isset($_SESSION['success'])): ?>
+            <p class="success" style="text-align: center;"><?= htmlspecialchars($_SESSION['success']); ?></p>
+            <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
+        <?php if(isset($_SESSION['error'])): ?>
+            <p class="error"><?= htmlspecialchars($_SESSION['error']); ?></p>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+
         <button type="submit" style="font-size: medium;">Add to Event</button>
     </form>
     <br>

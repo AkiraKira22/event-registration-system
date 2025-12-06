@@ -91,19 +91,13 @@ $stmt->close();
             <?php endif; ?>
         </tbody>
     </table>
-    <?php if(isset($_GET['success'])): ?>
-        <?php 
-            $success_message = '';
-            if ($_GET['success'] === 'Deregistration successful') {
-                $success_message = 'Participant successfully removed.';
-            }
-            else {
-                $success_message = 'Participant successfully added!';
-            }
-        ?>
-        <p class="success"><?= $success_message; ?></p>
-    <?php elseif(isset($_GET['error'])): ?>
-        <p class="error"><?= htmlspecialchars($_GET['error']); ?></p>
+    <?php if(isset($_SESSION['success'])): ?>
+        <p class="success"><?= htmlspecialchars($_SESSION['success']); ?></p>
+        <?php unset($_SESSION['success']);?>
+    <?php endif; ?>
+    <?php if(isset($_SESSION['error'])): ?>
+        <p class="error"><?= htmlspecialchars($_SESSION['error']); ?></p>
+        <?php unset($_SESSION['error']);?>
     <?php endif; ?>
 </div>
 </body>

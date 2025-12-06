@@ -1,5 +1,5 @@
 <?php
-include("conn.php");
+include "conn.php";
 
 // SQL DDL tables definition
 // Create participant table
@@ -42,6 +42,5 @@ $sql = "CREATE TABLE IF NOT EXISTS registration (
 )";
 if (!$conn->query($sql)) die("Error creating registration table: " . $conn->error);
 
-echo "All tables created successfully!";
 header("Location: dashboard.php");
 ?>

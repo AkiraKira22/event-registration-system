@@ -17,11 +17,13 @@ $participant_id = $_GET['participant_id'];
 $stmt = $conn->prepare("DELETE FROM registration WHERE event_id = ? AND participant_id = ?");
 $stmt->bind_param("ii", $event_id, $participant_id);
 if ($stmt->execute()) {
-    header("Location: detail.php?event_id=$event_id&success=Deregistration successful");
+    $_SESSION["success_message"] = "Registration deleted successfully.";
 }
 else {
-    header("Location: detail.php?event_id=$event_id&error=Failed to remove registration: " . $stmt->error);
+    $_SESSION["error_message"] = "Failed to remove registration:" . $conn->error;
 }
 $stmt->close();
+
+header("Location: detail.php?event_id=$event_id");
 exit;
 ?>
