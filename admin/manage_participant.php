@@ -7,31 +7,17 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Fetch participants
-$result = $conn->query("SELECT * FROM participant ORDER BY name ASC");
+// Fetch participants with their registered events
+$sql = "SELECT p.*, 
+        COUNT(r.event_id) as event_count
+        FROM participant p
+        LEFT JOIN registration r ON p.participant_id = r.participant_id
+        GROUP BY p.participant_id
+        ORDER BY p.name ASC";
+
+$result = $conn->query($sql);
 $participants = [];
-
 while ($row = $result->fetch_assoc()) {
-    $participant_id = $row['participant_id'];
-
-    // Fetch events this participant is registered to
-    $stmt = $conn->prepare("
-        SELECT e.name 
-        FROM event e
-        JOIN registration r ON e.event_id = r.event_id
-        WHERE r.participant_id = ?
-        ORDER BY e.start_date ASC
-    ");
-    $stmt->bind_param("i", $participant_id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $events = [];
-    while ($event_row = $res->fetch_assoc()) {
-        $events[] = $event_row['name'];
-    }
-    $stmt->close();
-
-    $row['registered_events'] = $events;
     $participants[] = $row;
 }
 ?>
@@ -50,7 +36,6 @@ while ($row = $result->fetch_assoc()) {
                 <button class="dropbtn">Navigate</button>
                 <div class="dropdown-content">
                     <a href="manage_event.php">Manage Events</a>
-                    <a href="manage_registration.php">Register Participant</a>
                     <a href="dashboard.php">Home</a>
                 </div>
             </div>
@@ -65,11 +50,11 @@ while ($row = $result->fetch_assoc()) {
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Registered Events</th>
-                <th>Actions</th>
+                <th style="width: 25%;">Name</th>
+                <th style="width: 25%;">Email</th>
+                <th style="width: 15%;">Phone</th>
+                <th style="width: 25%;">Registered Events</th>
+                <th style="width: 10%;">Actions</th>
             </tr>
         </thead>
         <tbody>

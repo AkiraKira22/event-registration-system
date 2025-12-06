@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
+            // Create admin account
             $stmt_insert = $conn->prepare("INSERT INTO admin (email, password) VALUES (?, ?)");
             $stmt_insert->bind_param("ss", $email, $hash);
             if ($stmt_insert->execute()) {

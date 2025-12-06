@@ -9,7 +9,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if (!$conn->query("CREATE DATABASE IF NOT EXISTS `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")) {
+if (!$conn->query("CREATE DATABASE IF NOT EXISTS `$dbname`")) {
     die("Error creating database: " . $conn->error);
 }
 

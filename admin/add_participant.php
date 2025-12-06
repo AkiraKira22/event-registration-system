@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    // Insert new participant
+    // SQL DML for inserting participant
     $stmt = $conn->prepare("INSERT INTO participant (name, email, phone_number) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $email, $phone);
     $stmt->execute();
@@ -50,10 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Phone Number</label>
         <input type="text" name="phone">
 
-        <button type="submit">Add Participant</button>
+        <button type="submit" style="font-size: medium;">Add Participant</button>
     </form>
     <br>
-    <a class="btn" href="manage_participant.php">Cancel</a>
+    <a class="btn" href="manage_participant.php">Back</a>
 </div>
 </body>
 </html>

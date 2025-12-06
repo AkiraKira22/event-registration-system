@@ -15,11 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $end = $_POST['end_date'];
     $location = $_POST['location'];
 
-    // Insert new event
-    $stmt = $conn->prepare("
-        INSERT INTO event (name, description, start_date, end_date, location)
-        VALUES (?, ?, ?, ?, ?)
-    ");
+    // SQL DML for inserting event
+    $stmt = $conn->prepare(" INSERT INTO event (name, description, start_date, end_date, location) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $name, $description, $start, $end, $location);
     $stmt->execute();
     $stmt->close();
@@ -61,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Location</label>
         <input type="text" name="location" required>
 
-        <button type="submit">Add Event</button>
+        <button type="submit" style="font-size: medium;">Add Event</button>
     </form>
     <br>
-    <a class="btn" href="manage_event.php">Cancel</a>
+    <a class="btn" href="manage_event.php">Back</a>
 </div>
 </body>
 </html>

@@ -15,7 +15,7 @@ $stmt_check = $conn->prepare("SELECT * FROM registration WHERE event_id = ? AND 
 $stmt_check->bind_param("ii", $event_id, $participant_id);
 $stmt_check->execute();
 if($stmt_check->get_result()->num_rows > 0){
-    header("Location: detail.php?event_id=$event_id&error=Participant already registered");
+    header("Location: add_participant.php?event_id=$event_id&error=Participant already registered");
     exit;
 }
 
@@ -23,10 +23,10 @@ if($stmt_check->get_result()->num_rows > 0){
 $stmt = $conn->prepare("INSERT INTO registration (event_id, participant_id) VALUES (?, ?)");
 $stmt->bind_param("ii", $event_id, $participant_id);
 if($stmt->execute()){
-    header("Location: detail.php?event_id=$event_id&success=1");
+    header("Location: add_participant.php?event_id=$event_id&success=1");
 }
 else {
-    header("Location: detail.php?event_id=$event_id&error=Database Error");
+    header("Location: add_participant.php?event_id=$event_id&error=Database Error");
 }
 exit;
 ?>

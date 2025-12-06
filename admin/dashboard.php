@@ -23,7 +23,6 @@ if(!isset($_SESSION['admin_id'])) {
                 <div class="dropdown-content">
                     <a href="manage_event.php">Manage Events</a>
                     <a href="manage_participant.php">Manage Participants</a>
-                    <a href="manage_registration.php">Register Participant</a>
                 </div>
             </div>
             <a href="logout.php" class="logout-btn">Logout</a>

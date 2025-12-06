@@ -8,10 +8,17 @@ if(!isset($_SESSION['admin_id'])) {
 }
 
 // Fetch events with attendee counts
-$sql = "SELECT e.*, COUNT(r.registration_id) as attendee_count  FROM event e LEFT JOIN registration r ON e.event_id = r.event_id GROUP BY e.event_id ORDER BY e.start_date ASC";
+$sql = "SELECT e.*, COUNT(r.registration_id) as attendee_count
+        FROM event e
+        LEFT JOIN registration r ON e.event_id = r.event_id
+        GROUP BY e.event_id
+        ORDER BY e.start_date DESC";
+
 $result = $conn->query($sql);
 $events = [];
-while ($row = $result->fetch_assoc()) $events[] = $row;
+while ($row = $result->fetch_assoc()) {
+    $events[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +35,6 @@ while ($row = $result->fetch_assoc()) $events[] = $row;
                 <button class="dropbtn">Navigate</button>
                 <div class="dropdown-content">
                     <a href="manage_participant.php">Manage Participants</a>
-                    <a href="manage_registration.php">Register Participant</a>
                     <a href="dashboard.php">Home</a>
                 </div>
             </div>
@@ -43,12 +49,12 @@ while ($row = $result->fetch_assoc()) $events[] = $row;
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Start → End</th>
-                <th>Location</th>
-                <th>Attendees</th>
-                <th>Actions</th>
+                <th style="width: 20%;">Name</th>
+                <th style="width: 30%;">Description</th>
+                <th style="width: 20%;">Start → End</th>
+                <th style="width: 15%;">Location</th>
+                <th style="width: 5%">Attendees</th>
+                <th style="width: 10%;">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -59,7 +65,11 @@ while ($row = $result->fetch_assoc()) $events[] = $row;
         <?php else: ?>
             <?php foreach ($events as $event): ?>
                 <tr>
-                    <td><?= htmlspecialchars($event['name']); ?></td>
+                    <td>
+                        <a href="../event/detail.php?event_id=<?= $event['event_id']; ?>" class="link" style="font-weight: bold;">
+                            <?= htmlspecialchars($event['name']); ?>
+                        </a>
+                    </td>
                     <td><?= htmlspecialchars($event['description']); ?></td>
                     <td><?= $event['start_date']; ?> → <?= $event['end_date']; ?></td>
                     <td><?= htmlspecialchars($event['location']); ?></td>

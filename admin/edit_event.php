@@ -22,8 +22,10 @@ if (!$event_id) {
 $stmt = $conn->prepare("SELECT * FROM event WHERE event_id = ?");
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
+
 $result = $stmt->get_result();
 $event = $result->fetch_assoc();
+
 $stmt->close();
 if (!$event) die("Event not found");
 
@@ -77,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Location</label>
         <input type="text" name="location" value="<?= htmlspecialchars($event['location']); ?>" required>
         
-        <button type="submit">Update Event</button>
+        <button type="submit" style="font-size: medium;">Update Event</button>
     </form>
     <br>
-    <a class="btn" href="manage_event.php">Cancel</a>
+    <a class="btn" href="manage_event.php">Back</a>
 </div>
 </body>
 </html>

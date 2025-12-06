@@ -19,17 +19,21 @@ if (!$event) {
     die("Event not found");
 }
 
-// Fetch participants
-$participants_fetch = $conn->query("SELECT * FROM participant ORDER BY name ASC");
-$all_participants = [];
-while($row = $participants_fetch->fetch_assoc()) $all_participants[] = $row;
+$sql = "SELECT r.registration_id, r.registration_date, p.participant_id, p.name, p.email
+        FROM registration r
+        JOIN participant p ON r.participant_id = p.participant_id
+        WHERE r.event_id = ?
+        ORDER BY r.registration_date ASC";
 
-// Fetch registered users
-$reg_sql = "SELECT p.name, p.email, p.participant_id, r.registration_date FROM registration r JOIN participant p ON r.participant_id = p.participant_id WHERE r.event_id = $event_id";
-$reg_result = $conn->query($reg_sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $event_id);
+$stmt->execute();
+$result = $stmt->get_result();
 $registered_users = [];
-
-while($row = $reg_result->fetch_assoc()) $registered_users[] = $row;
+while($row = $result->fetch_assoc()) {
+    $registered_users[] = $row;
+}
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -42,34 +46,22 @@ while($row = $reg_result->fetch_assoc()) $registered_users[] = $row;
 <body>
 <nav class="navbar">
     <div class="navbar-menu">
-        <a href="../admin/manage_registration.php">Back to Registration List</a>
+        <a href="../admin/manage_event.php">Back to Event List</a>
         <a href="../admin/logout.php" class="logout-btn">Logout</a>
     </div>
 </nav>
 <div class="container">
-    <h1><?= htmlspecialchars($event['name']); ?></h1>
+    <h1><?= htmlspecialchars($event['name']); ?></h1>   
     <div style="text-align: left; margin-bottom: 20px;">
         <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($event['description'])); ?></p>
         <p><strong>Date:</strong> <?= $event['start_date']; ?> → <?= $event['end_date']; ?></p>
         <p><strong>Location:</strong> <?= htmlspecialchars($event['location']); ?></p>
     </div>
     <hr>
-    <h3>Register a Participant</h3>
-    <form method="post" action="register_participant.php">
-        <input type="hidden" name="event_id" value="<?= $event_id; ?>">
-        <label>Select Participant:</label>
-        <select name="participant_id" required>
-            <option value="">Choose a Person</option>
-            <?php foreach($all_participants as $p): ?>
-                <option value="<?= $p['participant_id']; ?>">
-                    <?= htmlspecialchars($p['name']); ?> (<?= htmlspecialchars($p['email']); ?>)
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <button type="submit">Add to Event</button>
-    </form>
-    <hr>
-    <h3>Current Attendee List</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Current Attendee List</h3>
+        <a href="add_participant.php?event_id=<?= $event_id; ?>">Register Participant</a>
+    </div>
     <table>
         <thead>
             <tr>
@@ -102,12 +94,11 @@ while($row = $reg_result->fetch_assoc()) $registered_users[] = $row;
     <?php if(isset($_GET['success'])): ?>
         <?php 
             $success_message = '';
-
             if ($_GET['success'] === 'Deregistration successful') {
-                $success_message = 'Participant successfully removed from the event.';
+                $success_message = 'Participant successfully removed.';
             }
             else {
-                $success_message = 'Participant successfully added to the event!';
+                $success_message = 'Participant successfully added!';
             }
         ?>
         <p class="success"><?= $success_message; ?></p>

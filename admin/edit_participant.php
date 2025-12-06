@@ -22,8 +22,10 @@ if (!$participant_id) {
 $stmt = $conn->prepare("SELECT * FROM participant WHERE participant_id=?");
 $stmt->bind_param("i", $participant_id);
 $stmt->execute();
+
 $result = $stmt->get_result();
 $participant = $result->fetch_assoc();
+
 $stmt->close();
 if (!$participant) die("Participant not found");
 
@@ -69,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Phone Number</label>
         <input type="text" name="phone" value="<?= htmlspecialchars($participant['phone_number']); ?>">
 
-        <button type="submit">Update Participant</button>
+        <button type="submit" style="font-size: medium;">Update Participant</button>
     </form>
     <br>
-    <a class="btn" href="manage_participant.php">Cancel</a>
+    <a class="btn" href="manage_participant.php">Back</a>
 </div>
 </body>
 </html>
