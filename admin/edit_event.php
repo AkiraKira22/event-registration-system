@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $end = $_POST['end_date'];
     $location = $_POST['location'];
 
+    //SQL DML with UPDATE to modify event
     $stmt = $conn->prepare("UPDATE event SET name=?, description=?, start_date=?, end_date=?, location=? WHERE event_id=?");
     $stmt->bind_param("sssssi", $name, $description, $start, $end, $location, $event_id);
     $stmt->execute();

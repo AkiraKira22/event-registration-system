@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    // SQL DML for inserting participant
+    // SQL DML with INSERT to add new participant
     $stmt = $conn->prepare("INSERT INTO participant (name, email, phone_number) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $email, $phone);
     $stmt->execute();

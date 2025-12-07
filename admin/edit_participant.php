@@ -18,7 +18,7 @@ if (!$participant_id) {
     die("Participant not found");
 }
 
-// Fetch participant
+// SQL DML with SELECT to get participant details
 $stmt = $conn->prepare("SELECT * FROM participant WHERE participant_id=?");
 $stmt->bind_param("i", $participant_id);
 $stmt->execute();
@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
+    // SQL DML with UPDATE to modify participant
     $stmt = $conn->prepare("UPDATE participant SET name=?, email=?, phone_number=? WHERE participant_id=?");
     $stmt->bind_param("sssi", $name, $email, $phone, $participant_id);
     $stmt->execute();

@@ -13,7 +13,7 @@ if(!isset($_GET['event_id'])) {
 
 $event_id = $_GET['event_id'];
 
-// Fetch Event Name
+// SQL DML with SELECT to get event details
 $stmt = $conn->prepare("SELECT name FROM event WHERE event_id = ?");
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
@@ -24,7 +24,7 @@ if (!$event) {
     die("Event not found");
 }
 
-// Fetch participants
+// SQL DML with SELECT to get all participants
 $participants_fetch = $conn->query("SELECT * FROM participant ORDER BY name ASC");
 $all_participants = [];
 while($row = $participants_fetch->fetch_assoc()) {

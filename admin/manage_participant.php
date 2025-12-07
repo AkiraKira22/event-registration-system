@@ -7,9 +7,8 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Fetch participants with their registered events
-$sql = "SELECT p.*, 
-        COUNT(r.event_id) as event_count
+// SQL DML with aggregation to get participants with their registered events
+$sql = "SELECT p.*, COUNT(r.event_id) as event_count
         FROM participant p
         LEFT JOIN registration r ON p.participant_id = r.participant_id
         GROUP BY p.participant_id

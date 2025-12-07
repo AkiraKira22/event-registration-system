@@ -10,7 +10,7 @@ if(!isset($_SESSION['admin_id'])) {
 $event_id = $_POST['event_id'];
 $participant_id = $_POST['participant_id'];
 
-// Check if already registered
+// SQL DML with SELECT to check existing registration
 $stmt_check = $conn->prepare("SELECT * FROM registration WHERE event_id = ? AND participant_id = ?");
 $stmt_check->bind_param("ii", $event_id, $participant_id);
 $stmt_check->execute();
@@ -19,7 +19,7 @@ if($stmt_check->get_result()->num_rows > 0){
     exit;
 }
 
-// Insert Registration
+// SQL DML with INSERT to add participant to event
 $stmt = $conn->prepare("INSERT INTO registration (event_id, participant_id) VALUES (?, ?)");
 $stmt->bind_param("ii", $event_id, $participant_id);
 if($stmt->execute()){

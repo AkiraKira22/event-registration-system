@@ -10,6 +10,8 @@ if(!isset($_SESSION['admin_id'])) {
 // Delete participant
 if (isset($_GET['participant_id'])) {
     $participant_id = intval($_GET['participant_id']);
+    
+    // SQL DML with DELETE to remove participant
     $conn->query("DELETE FROM participant WHERE participant_id=$participant_id");
 }
 

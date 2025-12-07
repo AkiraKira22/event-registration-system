@@ -7,7 +7,7 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Fetch events with attendee counts
+// SQL DML with aggregation to get events with attendee counts
 $sql = "SELECT e.*, COUNT(r.registration_id) as attendee_count
         FROM event e
         LEFT JOIN registration r ON e.event_id = r.event_id

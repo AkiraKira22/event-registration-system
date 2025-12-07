@@ -9,7 +9,7 @@ if(!isset($_SESSION['admin_id'])) {
 
 $event_id = $_GET['event_id'];
 
-// Fetch Event Details
+// SQL DML with SELECT to get event details
 $stmt = $conn->prepare("SELECT * FROM event WHERE event_id = ?");
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
@@ -19,9 +19,10 @@ if (!$event) {
     die("Event not found");
 }
 
+// SQL DML with JOIN to get registered participants
 $sql = "SELECT r.registration_id, r.registration_date, p.participant_id, p.name, p.email
         FROM registration r
-        JOIN participant p ON r.participant_id = p.participant_id
+        JOIN participant p ON r.participant_id = p.participant_id 
         WHERE r.event_id = ?
         ORDER BY r.registration_date ASC";
 
