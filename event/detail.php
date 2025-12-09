@@ -76,15 +76,15 @@ $stmt->close();
             <?php if(empty($registered_users)): ?>
                 <tr><td colspan="4" style="text-align:center;">No attendees yet.</td></tr>
             <?php else: ?>
-                <?php foreach($registered_users as $reg_u): ?>
+                <?php foreach($registered_users as $reg_user): ?>
                     <tr>
-                        <td><?= htmlspecialchars($reg_u['name']); ?></td>
-                        <td><?= htmlspecialchars($reg_u['email']); ?></td>
-                        <td><?= $reg_u['registration_date']; ?></td>
+                        <td><?= htmlspecialchars($reg_user['name']); ?></td>
+                        <td><?= htmlspecialchars($reg_user['email']); ?></td>
+                        <td><?= $reg_user['registration_date']; ?></td>
                         <td class="action-links">
                             <a class="link-danger" 
-                               href="delete_registration.php?event_id=<?= $event_id; ?>&participant_id=<?= $reg_u['participant_id']; ?>" 
-                               onclick="return confirm('Deregister <?= htmlspecialchars($reg_u['name']); ?> from this event?')"
+                               href="delete_registration.php?event_id=<?= $event_id; ?>&participant_id=<?= $reg_user['participant_id']; ?>" 
+                               onclick="return confirm('Deregister <?= htmlspecialchars($reg_user['name']); ?> from this event?')"
                             >Deregister</a>
                         </td>
                     </tr>
