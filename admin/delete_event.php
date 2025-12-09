@@ -7,6 +7,7 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+// Delete event
 if(isset($_GET['event_id'])) {
     $event_id = intval($_GET['event_id']);
     

@@ -7,6 +7,8 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+$error = "";
+
 // Get event ID
 if (isset($_GET['event_id'])) {
     $event_id = $_GET['event_id'];
@@ -36,15 +38,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start = $_POST['start_date'];
     $end = $_POST['end_date'];
     $location = $_POST['location'];
+    $today = date('Y-m-d');
 
-    //SQL DML with UPDATE to modify event
-    $stmt = $conn->prepare("UPDATE event SET name=?, description=?, start_date=?, end_date=?, location=? WHERE event_id=?");
-    $stmt->bind_param("sssssi", $name, $description, $start, $end, $location, $event_id);
-    $stmt->execute();
-    $stmt->close();
+    if ($start > $end) {
+        $error = "Invalid date input.";
+    }
+    elseif ($start < $today) {
+        $error = "Invalid date input.";
+    }
+    elseif ($end < $today) {
+        $error = "Invalid date input.";
+    }
+    else {
+        //SQL DML with UPDATE to modify event
+        $stmt = $conn->prepare("UPDATE event SET name=?, description=?, start_date=?, end_date=?, location=? WHERE event_id=?");
+        $stmt->bind_param("sssssi", $name, $description, $start, $end, $location, $event_id);
+        $stmt->execute();
+        $stmt->close();
 
-    header("Location: manage_event.php");
-    exit;
+        header("Location: manage_event.php");
+        exit;
+    }
 }
 ?>
 
@@ -66,19 +80,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Edit Event</h1>
     <form method="post">
         <label>Event Name</label>
-        <input type="text" name="name" value="<?= htmlspecialchars($event['name']); ?>" required>
+        <input type="text" name="name" value="<?= htmlspecialchars($event['name']) ?>" required>
         
         <label>Description</label>
-        <textarea name="description" required><?= htmlspecialchars($event['description']); ?></textarea>
+        <textarea name="description" required><?= htmlspecialchars($event['description']) ?></textarea>
         
         <label>Start Date</label>
-        <input type="date" name="start_date" value="<?= $event['start_date']; ?>" required>
+        <input type="date" name="start_date" value="<?= $event['start_date'] ?>" required>
         
         <label>End Date</label>
-        <input type="date" name="end_date" value="<?= $event['end_date']; ?>" required>
+        <input type="date" name="end_date" value="<?= $event['end_date'] ?>" required>
         
         <label>Location</label>
-        <input type="text" name="location" value="<?= htmlspecialchars($event['location']); ?>" required>
+        <input type="text" name="location" value="<?= htmlspecialchars($event['location']) ?>" required>
+
+        <?php if ($error): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
         
         <button type="submit" style="font-size: medium;">Update Event</button>
     </form>

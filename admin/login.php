@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
-    <?php if (!empty($error)) echo "<p class='error'>$error</p>"; ?>
+    <?php if (!empty($error)) echo "<p class='error'>$error</p>" ?>
     <p>Don't have an account? <a class="link" href="register.php">Register here</a></p>
     <p><a class="btn" href="../dashboard.php">Back</a></p>
 </div>

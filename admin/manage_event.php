@@ -67,16 +67,16 @@ while ($row = $result->fetch_assoc()) {
                 <tr>
                     <td>
                         <a href="../event/detail.php?event_id=<?= $event['event_id']; ?>" class="link" style="font-weight: bold;">
-                            <?= htmlspecialchars($event['name']); ?>
+                            <?= htmlspecialchars($event['name']) ?>
                         </a>
                     </td>
-                    <td><?= htmlspecialchars($event['description']); ?></td>
-                    <td><?= $event['start_date']; ?> → <?= $event['end_date']; ?></td>
-                    <td><?= htmlspecialchars($event['location']); ?></td>
-                    <td style="text-align:center; font-weight:bold;"><?= $event['attendee_count']; ?></td>
+                    <td><?= htmlspecialchars($event['description']) ?></td>
+                    <td><?= $event['start_date']; ?> → <?= $event['end_date'] ?></td>
+                    <td><?= htmlspecialchars($event['location']) ?></td>
+                    <td style="text-align:center; font-weight:bold;"><?= $event['attendee_count'] ?></td>
                     <td class="action-links">
-                        <a class="link" href="edit_event.php?event_id=<?= $event['event_id']; ?>">Edit</a>
-                        <a class="link-danger" href="delete_event.php?event_id=<?= $event['event_id']; ?>" onclick="return confirm('Delete this event?')">Delete</a>
+                        <a class="link" href="edit_event.php?event_id=<?= $event['event_id'] ?>">Edit</a>
+                        <a class="link-danger" href="delete_event.php?event_id=<?= $event['event_id'] ?>" onclick="return confirm('Delete this event?')">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

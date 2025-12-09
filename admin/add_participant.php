@@ -7,20 +7,30 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Handle participant form submission
+$error = "";
+
+// Add participant
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    // SQL DML with INSERT to add new participant
-    $stmt = $conn->prepare("INSERT INTO participant (name, email, phone_number) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $phone);
-    $stmt->execute();
-    $stmt->close();
+    if (strlen($phone) > 10) {
+        $error = "Invalid phone number.";
+    }
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email address.";
+    } 
+    else {
+        // SQL DML with INSERT to add new participant
+        $stmt = $conn->prepare("INSERT INTO participant (name, email, phone_number) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $name, $email, $phone);
+        $stmt->execute();
+        $stmt->close();
 
-    header("Location: manage_participant.php");
-    exit;
+        header("Location: manage_participant.php");
+        exit;
+    }
 }
 ?>
 
@@ -48,7 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="email" name="email" required>
 
         <label>Phone Number</label>
-        <input type="text" name="phone">
+        <input type="text" name="phone" required>
+
+        <?php if ($error): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
 
         <button type="submit" style="font-size: medium;">Add Participant</button>
     </form>
