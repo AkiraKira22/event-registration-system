@@ -49,10 +49,9 @@ while ($row = $result->fetch_assoc()) {
     <table>
         <thead>
             <tr>
-                <th style="width: 25%;">Name</th>
-                <th style="width: 25%;">Email</th>
-                <th style="width: 15%;">Phone</th>
-                <th style="width: 25%;">Registered Events</th>
+                <th style="width: 30%;">Name</th>
+                <th style="width: 35%;">Email</th>
+                <th style="width: 25%;">Phone</th>
                 <th style="width: 10%;">Actions</th>
             </tr>
         </thead>
@@ -65,16 +64,6 @@ while ($row = $result->fetch_assoc()) {
                         <td><?= htmlspecialchars($p['name']); ?></td>
                         <td><?= htmlspecialchars($p['email']); ?></td>
                         <td><?= htmlspecialchars($p['phone_number']); ?></td>
-                        <td>
-                            <?php 
-                                if (!empty($p['registered_events'])) {
-                                    echo implode(", ", array_map('htmlspecialchars', $p['registered_events']));
-                                }
-                                else {
-                                    echo "<span style='color:lightgray;'>None</span>";
-                                }
-                            ?>
-                        </td>
                         <td class="action-links">
                             <a class="link" href="edit_participant.php?participant_id=<?= $p['participant_id']; ?>">Edit</a>
                             <a class="link-danger" href="delete_participant.php?participant_id=<?= $p['participant_id']; ?>" onclick="return confirm('Delete this participant?')">Delete</a>

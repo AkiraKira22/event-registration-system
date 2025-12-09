@@ -7,7 +7,7 @@ $sql = "CREATE TABLE IF NOT EXISTS participant (
     participant_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    phone_number VARCHAR(20),
+    phone_number VARCHAR(10),
     password VARCHAR(255) NOT NULL
 )";
 if (!$conn->query($sql)) die("Error creating participant table: " . $conn->error);

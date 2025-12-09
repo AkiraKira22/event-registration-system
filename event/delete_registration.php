@@ -7,23 +7,14 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-if (!isset($_GET['event_id']) || !isset($_GET['participant_id'])) {
-    die("Missing event or participant ID.");
+if (isset($_GET['event_id']) && isset($_GET['participant_id'])) {
+    $event_id = intval($_GET['event_id']);
+    $participant_id = intval($_GET['participant_id']);
+    
+    // SQL DML with DELETE to remove registration
+    $conn->query("DELETE FROM registration WHERE event_id = $event_id AND participant_id = $participant_id");
 }
 
-$event_id = $_GET['event_id'];
-$participant_id = $_GET['participant_id'];
-
-$stmt = $conn->prepare("DELETE FROM registration WHERE event_id = ? AND participant_id = ?");
-$stmt->bind_param("ii", $event_id, $participant_id);
-if ($stmt->execute()) {
-    $_SESSION["success_message"] = "Registration deleted successfully.";
-}
-else {
-    $_SESSION["error_message"] = "Failed to remove registration:" . $conn->error;
-}
-$stmt->close();
-
-header("Location: detail.php?event_id=$event_id");
+header("Location: detail.php?event_id=" . $_GET['event_id']);
 exit;
 ?>

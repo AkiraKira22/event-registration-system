@@ -69,7 +69,7 @@ $stmt->close();
                 <th>Name</th>
                 <th>Email</th>
                 <th>Registration Time</th>
-                <th>Action</th>
+                <th style="width:10%">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -92,14 +92,6 @@ $stmt->close();
             <?php endif; ?>
         </tbody>
     </table>
-    <?php if(isset($_SESSION['success'])): ?>
-        <p class="success"><?= htmlspecialchars($_SESSION['success']); ?></p>
-        <?php unset($_SESSION['success']);?>
-    <?php endif; ?>
-    <?php if(isset($_SESSION['error'])): ?>
-        <p class="error"><?= htmlspecialchars($_SESSION['error']); ?></p>
-        <?php unset($_SESSION['error']);?>
-    <?php endif; ?>
 </div>
 </body>
 </html>

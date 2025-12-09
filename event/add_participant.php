@@ -7,19 +7,58 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-if(!isset($_GET['event_id'])) {
-    die("Event ID missing.");
+$error = "";
+$success = "";
+$event_id = null;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $event_id = $_POST["event_id"];
+    $participant_id = $_POST["participant_id"];
+
+    if ($event_id == null) {
+        $error .= "Event not found.";
+    }
+    else {
+        // SQL DML with SELECT to get event details
+        $stmt_select = $conn->prepare("SELECT * FROM registration WHERE event_id = ? AND participant_id = ?");
+        $stmt_select->bind_param("ii", $event_id, $participant_id);
+        $stmt_select->execute();
+
+        if ($stmt_select->get_result()->num_rows > 0) {
+            $error = "Participant already registered for this event.";
+        }
+        else {
+            $stmt_insert = $conn->prepare("INSERT INTO registration (event_id, participant_id) VALUES (?, ?)");
+            $stmt_insert->bind_param("ii", $event_id, $participant_id);
+            if ($stmt_insert->execute()) {
+                $success = "Participant successfully added!";
+            }
+            else {
+                $error = "Could not register participant." . $conn->error;
+            }
+            $stmt_insert->close();
+        }
+        $stmt_select->close();
+    }
 }
 
-$event_id = $_GET['event_id'];
+if (isset($_GET['event_id'])) {
+    $event_id = $_GET['event_id'];
+}
+elseif (isset($_POST['event_id'])) {
+    $event_id = $_POST['event_id'];
+}
+else {
+    die("Event ID is missing.");
+}
 
 // SQL DML with SELECT to get event details
-$stmt = $conn->prepare("SELECT name FROM event WHERE event_id = ?");
+$stmt = $conn->prepare("SELECT * FROM event WHERE event_id = ?");
 $stmt->bind_param("i", $event_id);
 $stmt->execute();
-$event = $stmt->get_result()->fetch_assoc();
+$result = $stmt->get_result();
+$event = $result->fetch_assoc();
 $stmt->close();
-
 if (!$event) {
     die("Event not found");
 }
@@ -50,7 +89,7 @@ while($row = $participants_fetch->fetch_assoc()) {
     <h1>Register Participant</h1>
     <p>Adding attendee to: <strong><?= htmlspecialchars($event['name']); ?></strong></p>
     <hr>
-    <form method="post" action="register_participant.php">
+    <form method="post">
         <input type="hidden" name="event_id" value="<?= $event_id; ?>">
         <label>Select Participant:</label>
         <select name="participant_id" required>
@@ -61,13 +100,12 @@ while($row = $participants_fetch->fetch_assoc()) {
                 </option>
             <?php endforeach; ?>
         </select>
-        <?php if(isset($_SESSION['success'])): ?>
-            <p class="success" style="text-align: center;"><?= htmlspecialchars($_SESSION['success']); ?></p>
-            <?php unset($_SESSION['success']); ?>
+
+        <?php if($success): ?>
+            <p class="success" style="text-align: center;"><?= htmlspecialchars($success) ?></p>
         <?php endif; ?>
-        <?php if(isset($_SESSION['error'])): ?>
-            <p class="error"><?= htmlspecialchars($_SESSION['error']); ?></p>
-            <?php unset($_SESSION['error']); ?>
+        <?php if($error): ?>
+            <p class="error"><?= htmlspecialchars($error); ?></p>
         <?php endif; ?>
 
         <button type="submit" style="font-size: medium;">Add to Event</button>
