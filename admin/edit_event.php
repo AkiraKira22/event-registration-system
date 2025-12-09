@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($start > $end) {
         $error = "Invalid date input.";
     }
-    elseif ($start < $today) {
+    elseif ($start <= $today) {
         $error = "Invalid date input.";
     }
     elseif ($end < $today) {

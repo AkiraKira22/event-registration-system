@@ -37,12 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    if (strlen($phone > 10)) {
+    if (strlen($phone) > 10) {
         $error = "Invalid phone number.";
     }
-    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email address.";
-    } 
     else {
         // SQL DML with UPDATE to modify participant
         $stmt = $conn->prepare("UPDATE participant SET name=?, email=?, phone_number=? WHERE participant_id=?");
