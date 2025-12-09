@@ -38,8 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start = $_POST['start_date'];
     $end = $_POST['end_date'];
     $location = $_POST['location'];
+    $today = date('Y-m-d');
 
     if ($start > $end) {
+        $error = "Invalid date input.";
+    }
+    elseif ($start < $today) {
+        $error = "Invalid date input.";
+    }
+    elseif ($end < $today) {
         $error = "Invalid date input.";
     }
     else {
