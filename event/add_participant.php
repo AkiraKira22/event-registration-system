@@ -87,7 +87,7 @@ while($row = $participants_fetch->fetch_assoc()) {
 </nav>
 <div class="container" style="max-width: 600px;">
     <h1>Register Participant</h1>
-    <p>Adding attendee to: <strong><?= htmlspecialchars($event['name']); ?></strong></p>
+    <p>Adding attendee to: <strong><?= htmlspecialchars($event['name']) ?></strong></p>
     <hr>
     <form method="post">
         <input type="hidden" name="event_id" value="<?= $event_id; ?>">
@@ -95,8 +95,8 @@ while($row = $participants_fetch->fetch_assoc()) {
         <select name="participant_id" required>
             <option value="">Choose a Person</option>
             <?php foreach($all_participants as $participant): ?>
-                <option value="<?= $participant['participant_id']; ?>">
-                    <?= htmlspecialchars($participant['name']); ?> (<?= htmlspecialchars($participant['email']); ?>)
+                <option value="<?= $participant['participant_id'] ?>">
+                    <?= htmlspecialchars($participant['name']) ?> (<?= htmlspecialchars($participant['email']) ?>)
                 </option>
             <?php endforeach; ?>
         </select>
@@ -105,7 +105,7 @@ while($row = $participants_fetch->fetch_assoc()) {
             <p class="success" style="text-align: center;"><?= htmlspecialchars($success) ?></p>
         <?php endif; ?>
         <?php if($error): ?>
-            <p class="error"><?= htmlspecialchars($error); ?></p>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
 
         <button type="submit" style="font-size: medium;">Add to Event</button>

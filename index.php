@@ -7,7 +7,7 @@ $sql = "CREATE TABLE IF NOT EXISTS participant (
     participant_id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    phone_number VARCHAR(10),
+    phone_number VARCHAR(10) NOT NULL,
     password VARCHAR(255) NOT NULL
     PRIMARY KEY (participant_id)
 )";

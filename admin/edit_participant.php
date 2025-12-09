@@ -7,6 +7,8 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+$error = "";
+
 // Get participant ID
 if (isset($_GET['participant_id'])) {
     $participant_id = $_GET['participant_id'];
@@ -35,14 +37,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    // SQL DML with UPDATE to modify participant
-    $stmt = $conn->prepare("UPDATE participant SET name=?, email=?, phone_number=? WHERE participant_id=?");
-    $stmt->bind_param("sssi", $name, $email, $phone, $participant_id);
-    $stmt->execute();
-    $stmt->close();
+    if (strlen($phone > 10)) {
+        $error = "Invalid phone number.";
+        // Retain previous values
+        $participant["name"] = $name;
+        $participant["email"] = $email;
+        $participant["phone"] = $phone;
+    }
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = "Invalid email address.";
+    } 
+    else {
+        // SQL DML with UPDATE to modify participant
+        $stmt = $conn->prepare("UPDATE participant SET name=?, email=?, phone_number=? WHERE participant_id=?");
+        $stmt->bind_param("sssi", $name, $email, $phone, $participant_id);
+        $stmt->execute();
+        $stmt->close();
 
-    header("Location: manage_participant.php");
-    exit;
+        header("Location: manage_participant.php");
+        exit;
+    }
 }
 ?>
 
@@ -64,13 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Edit Participant</h1>
     <form method="post">
         <label>Full Name</label>
-        <input type="text" name="name" value="<?= htmlspecialchars($participant['name']); ?>" required>
+        <input type="text" name="name" value="<?= htmlspecialchars($participant['name']) ?>" required>
 
         <label>Email Address</label>
-        <input type="email" name="email" value="<?= htmlspecialchars($participant['email']); ?>" required>
+        <input type="email" name="email" value="<?= htmlspecialchars($participant['email']) ?>" required>
 
         <label>Phone Number</label>
-        <input type="text" name="phone" value="<?= htmlspecialchars($participant['phone_number']); ?>">
+        <input type="text" name="phone" value="<?= htmlspecialchars($participant['phone_number']) ?>" required>
+
+        <?php if ($error): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
 
         <button type="submit" style="font-size: medium;">Update Participant</button>
     </form>

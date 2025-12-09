@@ -51,8 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container" style="width: 500px;">
     <h1>Register</h1>
-    <?php if ($error) echo "<p class='error'>$error</p>"; ?>
-    <?php if ($success) echo "<p class='success'>$success</p>"; ?>
+    <?php if ($error)?>
+    <p class="error"><?= htmlspecialchars($error) ?></p>
+    <?php if ($success) ?>
+    <p class="success"><?= $success ?></p>
     <?php if (!$success): ?>
     <form method="post">
         <input type="email" name="email" placeholder="Email" required>

@@ -41,7 +41,7 @@ $stmt->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($event['name']); ?></title>
+    <title><?= htmlspecialchars($event['name']) ?></title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
@@ -52,11 +52,11 @@ $stmt->close();
     </div>
 </nav>
 <div class="container">
-    <h1><?= htmlspecialchars($event['name']); ?></h1>   
+    <h1><?= htmlspecialchars($event['name']) ?></h1>   
     <div style="text-align: left; margin-bottom: 20px;">
-        <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($event['description'])); ?></p>
-        <p><strong>Date:</strong> <?= $event['start_date']; ?> → <?= $event['end_date']; ?></p>
-        <p><strong>Location:</strong> <?= htmlspecialchars($event['location']); ?></p>
+        <p><strong>Description:</strong> <?= nl2br(htmlspecialchars($event['description'])) ?></p>
+        <p><strong>Date:</strong> <?= $event['start_date'] ?> → <?= $event['end_date'] ?></p>
+        <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
     </div>
     <hr>
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -78,13 +78,13 @@ $stmt->close();
             <?php else: ?>
                 <?php foreach($registered_users as $reg_user): ?>
                     <tr>
-                        <td><?= htmlspecialchars($reg_user['name']); ?></td>
-                        <td><?= htmlspecialchars($reg_user['email']); ?></td>
-                        <td><?= $reg_user['registration_date']; ?></td>
+                        <td><?= htmlspecialchars($reg_user['name']) ?></td>
+                        <td><?= htmlspecialchars($reg_user['email']) ?></td>
+                        <td><?= $reg_user['registration_date'] ?></td>
                         <td class="action-links">
                             <a class="link-danger" 
-                               href="delete_registration.php?event_id=<?= $event_id; ?>&participant_id=<?= $reg_user['participant_id']; ?>" 
-                               onclick="return confirm('Deregister <?= htmlspecialchars($reg_user['name']); ?> from this event?')"
+                               href="delete_registration.php?event_id=<?= $event_id; ?>&participant_id=<?= $reg_user['participant_id'] ?>" 
+                               onclick="return confirm('Deregister <?= htmlspecialchars($reg_user['name']) ?> from this event?')"
                             >Deregister</a>
                         </td>
                     </tr>

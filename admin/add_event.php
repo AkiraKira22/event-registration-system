@@ -7,6 +7,8 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+$error = "";
+
 // Handle event form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
@@ -14,15 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start = $_POST['start_date'];
     $end = $_POST['end_date'];
     $location = $_POST['location'];
-    
+
+    if ($start > $end) {
+        $error = "Invalid date input.";
+    }
+    else {
     // SQL DML with INSERT to add new event
     $stmt = $conn->prepare(" INSERT INTO event (name, description, start_date, end_date, location) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $name, $description, $start, $end, $location);
     $stmt->execute();
     $stmt->close();
-
     header("Location: manage_event.php");
     exit;
+    }
 }
 ?>
 
@@ -42,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </nav>
 <div class="container">
     <h1>Add Event</h1>
-<form method="post">
+    <form method="post">
         <label>Event Name</label>
         <input type="text" name="name" required>
 
@@ -58,6 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Location</label>
         <input type="text" name="location" required>
 
+        <?php if ($error): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
         <button type="submit" style="font-size: medium;">Add Event</button>
     </form>
     <br>

@@ -61,12 +61,12 @@ while ($row = $result->fetch_assoc()) {
             <?php else: ?>
                 <?php foreach($participants as $participant): ?>
                     <tr>
-                        <td><?= htmlspecialchars($participant['name']); ?></td>
-                        <td><?= htmlspecialchars($participant['email']); ?></td>
-                        <td><?= htmlspecialchars($participant['phone_number']); ?></td>
+                        <td><?= htmlspecialchars($participant['name']) ?></td>
+                        <td><?= htmlspecialchars($participant['email']) ?></td>
+                        <td><?= htmlspecialchars($participant['phone_number']) ?></td>
                         <td class="action-links">
-                            <a class="link" href="edit_participant.php?participant_id=<?= $participant['participant_id']; ?>">Edit</a>
-                            <a class="link-danger" href="delete_participant.php?participant_id=<?= $participant['participant_id']; ?>" onclick="return confirm('Delete this participant?')">Delete</a>
+                            <a class="link" href="edit_participant.php?participant_id=<?= $participant['participant_id'] ?>">Edit</a>
+                            <a class="link-danger" href="delete_participant.php?participant_id=<?= $participant['participant_id'] ?>" onclick="return confirm('Delete this participant?')">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
