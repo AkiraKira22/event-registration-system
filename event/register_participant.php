@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error .= "Event not found.";
     }
     else {
-        // SQL DML with SELECT to get event details
+        // SQL DML with SELECT to check existing registration
         $stmt_select = $conn->prepare("SELECT * FROM registration WHERE event_id = ? AND participant_id = ?");
         $stmt_select->bind_param("ii", $event_id, $participant_id);
         $stmt_select->execute();

@@ -61,7 +61,7 @@ $stmt->close();
     <hr>
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3>Current Attendee List</h3>
-        <a href="add_participant.php?event_id=<?= $event_id; ?>">Register Participant</a>
+        <a href="register_participant.php?event_id=<?= $event_id; ?>">Register Participant</a>
     </div>
     <table>
         <thead>
