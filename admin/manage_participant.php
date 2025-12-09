@@ -7,12 +7,8 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// SQL DML with aggregation to get participants with their registered events
-$sql = "SELECT p.*, COUNT(r.event_id) as event_count
-        FROM participant p
-        LEFT JOIN registration r ON p.participant_id = r.participant_id
-        GROUP BY p.participant_id
-        ORDER BY p.name ASC";
+// SQL DML with SELECT to get all participants
+$sql = "SELECT * FROM participant ORDER BY name ASC";
 
 $result = $conn->query($sql);
 $participants = [];
