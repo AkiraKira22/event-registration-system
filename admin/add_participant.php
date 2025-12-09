@@ -7,7 +7,7 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Handle participant form submission
+// Add participant
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];

@@ -66,9 +66,9 @@ $stmt->close();
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Registration Time</th>
+                <th style="width:35%">Name</th>
+                <th style="width:35%">Email</th>
+                <th style="width:20%">Registration Time</th>
                 <th style="width:10%">Action</th>
             </tr>
         </thead>

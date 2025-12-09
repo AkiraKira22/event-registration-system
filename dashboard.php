@@ -14,7 +14,7 @@
     </nav>
 <div class="container">
     <h1>Event Registration System</h1>
-    <p>Welcomw to the Event Registration System</p>
+    <p>Welcome to the Event Registration System</p>
 </div>
 </body>
 </html>

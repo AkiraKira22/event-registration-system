@@ -1,7 +1,7 @@
 <?php
 include "conn.php";
 
-// SQL DDL tables definition
+// SQL DDL table definitions
 // Create participant table
 $sql = "CREATE TABLE IF NOT EXISTS participant (
     participant_id INT NOT NULL AUTO_INCREMENT,
