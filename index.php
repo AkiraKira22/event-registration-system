@@ -8,10 +8,10 @@ $conn = new mysqli($host, $user, $pass,);
 
 $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
 if (!$conn->query($sql)) {
-    die ("Connection Failed". $conn->error);
+    die ("Connection failed:". $conn->error);
 }
 if (!$conn->select_db($dbname)) {
-    die("Error selecting database". $conn->error);
+    die("Error selecting database:". $conn->error);
 }
 
 // SQL DDL table definitions
