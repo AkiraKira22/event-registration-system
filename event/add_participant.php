@@ -94,9 +94,9 @@ while($row = $participants_fetch->fetch_assoc()) {
         <label>Select Participant:</label>
         <select name="participant_id" required>
             <option value="">Choose a Person</option>
-            <?php foreach($all_participants as $p): ?>
-                <option value="<?= $p['participant_id']; ?>">
-                    <?= htmlspecialchars($p['name']); ?> (<?= htmlspecialchars($p['email']); ?>)
+            <?php foreach($all_participants as $participant): ?>
+                <option value="<?= $participant['participant_id']; ?>">
+                    <?= htmlspecialchars($participant['name']); ?> (<?= htmlspecialchars($participant['email']); ?>)
                 </option>
             <?php endforeach; ?>
         </select>
