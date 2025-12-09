@@ -1,5 +1,18 @@
 <?php
-include "conn.php";
+$host = "localhost";
+$user = "root";
+$pass = "";
+$dbname = "event_registration_system";
+
+$conn = new mysqli($host, $user, $pass,);
+
+$sql = "CREATE DATABASE IF NOT EXISTS $dbname";
+if (!$conn->query($sql)) {
+    die ("Connection Failed". $conn->error);
+}
+if (!$conn->select_db($dbname)) {
+    die("Error selecting database". $conn->error);
+}
 
 // SQL DDL table definitions
 // Create participant table
@@ -8,7 +21,7 @@ $sql = "CREATE TABLE IF NOT EXISTS participant (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone_number VARCHAR(10) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
     PRIMARY KEY (participant_id)
 )";
 if (!$conn->query($sql)) die("Error creating participant table: " . $conn->error);
@@ -20,7 +33,7 @@ $sql = "CREATE TABLE IF NOT EXISTS event (
     description TEXT,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    location VARCHAR(255) NOT NULL
+    location VARCHAR(255) NOT NULL,
     PRIMARY KEY (event_id)
 )";
 if (!$conn->query($sql)) die("Error creating event table: " . $conn->error);
@@ -29,7 +42,7 @@ if (!$conn->query($sql)) die("Error creating event table: " . $conn->error);
 $sql = "CREATE TABLE IF NOT EXISTS admin (
     admin_id INT NOT NULL AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
     PRIMARY KEY (admin_id)
 )";
 if (!$conn->query($sql)) die("Error creating admin table: " . $conn->error);
@@ -47,4 +60,5 @@ $sql = "CREATE TABLE IF NOT EXISTS registration (
 if (!$conn->query($sql)) die("Error creating registration table: " . $conn->error);
 
 header("Location: dashboard.php");
+exit;
 ?>
