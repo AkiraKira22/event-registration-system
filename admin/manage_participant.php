@@ -7,8 +7,12 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// SQL DML with SELECT to get all participants
-$sql = "SELECT * FROM participant ORDER BY name ASC";
+// SQL DML with aggregation to get participants with their registered events
+$sql = "SELECT p.*, COUNT(r.event_id) as event_count
+        FROM participant p
+        LEFT JOIN registration r ON p.participant_id = r.participant_id
+        GROUP BY p.participant_id
+        ORDER BY p.name ASC";
 
 $result = $conn->query($sql);
 $participants = [];
@@ -45,9 +49,10 @@ while ($row = $result->fetch_assoc()) {
     <table>
         <thead>
             <tr>
-                <th style="width: 30%;">Name</th>
-                <th style="width: 35%;">Email</th>
-                <th style="width: 25%;">Phone</th>
+                <th style="width: 25%;">Name</th>
+                <th style="width: 30%;">Email</th>
+                <th style="width: 20%;">Phone</th>
+                <th style="width: 15%;">Events Registered</th>
                 <th style="width: 10%;">Actions</th>
             </tr>
         </thead>
@@ -60,6 +65,9 @@ while ($row = $result->fetch_assoc()) {
                         <td><?= htmlspecialchars($participant['name']) ?></td>
                         <td><?= htmlspecialchars($participant['email']) ?></td>
                         <td><?= htmlspecialchars($participant['phone_number']) ?></td>
+                        <td style="text-align: center;">
+                            <?= $participant['event_count'] ?>
+                        </td>
                         <td class="action-links">
                             <a class="link" href="edit_participant.php?participant_id=<?= $participant['participant_id'] ?>">Edit</a>
                             <a class="link-danger" href="delete_participant.php?participant_id=<?= $participant['participant_id'] ?>" onclick="return confirm('Delete this participant?')">Delete</a>

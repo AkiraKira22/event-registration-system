@@ -50,10 +50,10 @@ while ($row = $result->fetch_assoc()) {
         <thead>
             <tr>
                 <th style="width: 20%;">Name</th>
-                <th style="width: 30%;">Description</th>
+                <th style="width: 25%;">Description</th>
                 <th style="width: 20%;">Start → End</th>
                 <th style="width: 15%;">Location</th>
-                <th style="width: 5%">Attendees</th>
+                <th style="width: 10%">Attendees</th>
                 <th style="width: 10%;">Actions</th>
             </tr>
         </thead>
@@ -73,7 +73,7 @@ while ($row = $result->fetch_assoc()) {
                     <td><?= htmlspecialchars($event['description']) ?></td>
                     <td><?= $event['start_date']; ?> → <?= $event['end_date'] ?></td>
                     <td><?= htmlspecialchars($event['location']) ?></td>
-                    <td style="text-align:center; font-weight:bold;"><?= $event['attendee_count'] ?></td>
+                    <td style="text-align:center"><?= $event['attendee_count'] ?></td>
                     <td class="action-links">
                         <a class="link" href="edit_event.php?event_id=<?= $event['event_id'] ?>">Edit</a>
                         <a class="link-danger" href="delete_event.php?event_id=<?= $event['event_id'] ?>" onclick="return confirm('Delete this event?')">Delete</a>
