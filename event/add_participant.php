@@ -9,7 +9,6 @@ if(!isset($_SESSION['admin_id'])) {
 
 $error = "";
 $success = "";
-$event_id = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $event_id = $_POST["event_id"];
