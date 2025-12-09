@@ -39,10 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (strlen($phone > 10)) {
         $error = "Invalid phone number.";
-        // Retain previous values
-        $participant["name"] = $name;
-        $participant["email"] = $email;
-        $participant["phone"] = $phone;
     }
     elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email address.";

@@ -41,12 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($start > $end) {
         $error = "Invalid date input.";
-        // Retain previous values
-        $event["name"] = $name;
-        $event["description"] = $description;
-        $event["start_date"] = $start;
-        $event["end_date"] = $end;
-        $event["location"] = $location;
     }
     else {
         //SQL DML with UPDATE to modify event
