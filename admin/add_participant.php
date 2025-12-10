@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
-    if (strlen($phone) > 10) {
+    if (strlen($phone) != 10) {
         $error = "Invalid phone number.";
     }
     else {
