@@ -21,7 +21,6 @@ $sql = "CREATE TABLE IF NOT EXISTS participant (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone_number VARCHAR(10) NOT NULL,
-    password VARCHAR(255) NOT NULL,
     PRIMARY KEY (participant_id)
 )";
 if (!$conn->query($sql)) die("Error creating participant table: " . $conn->error);
