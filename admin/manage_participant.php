@@ -7,14 +7,38 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// SQL DML with aggregation to get participants with their registered events
-$sql = "SELECT p.*, COUNT(r.event_id) as event_count
-        FROM participant p
-        LEFT JOIN registration r ON p.participant_id = r.participant_id
-        GROUP BY p.participant_id
-        ORDER BY p.name ASC";
+$search = "";
+// Check if search term exists
+if (isset($_GET['search'])) {
+    $search = trim($_GET['search']);
+}
 
-$result = $conn->query($sql);
+// Search by Name
+if ($search !== "") {
+    // SQL DML to get matching searched participant name
+    $sql = "SELECT p.*, COUNT(r.event_id) as event_count
+            FROM participant p
+            LEFT JOIN registration r ON p.participant_id = r.participant_id
+            WHERE p.name = ?
+            GROUP BY p.participant_id
+            ORDER BY p.name ASC";
+            
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
+}
+else {
+    // SQL DML with aggregation to get participants with their registered events
+    $sql = "SELECT p.*, COUNT(r.event_id) as event_count
+            FROM participant p
+            LEFT JOIN registration r ON p.participant_id = r.participant_id
+            GROUP BY p.participant_id
+            ORDER BY p.name ASC";
+
+    $result = $conn->query($sql);
+}
+
 $participants = [];
 while ($row = $result->fetch_assoc()) {
     $participants[] = $row;
@@ -43,7 +67,16 @@ while ($row = $result->fetch_assoc()) {
 </nav>
 <div class="container">
     <h1>Manage Participants</h1>
-    <div style="margin-bottom: 20px; text-align: right;">
+    <div>
+        <form method="GET" action="">
+            <input type="text" name="search" placeholder="Search participant name" value="<?= htmlspecialchars($search) ?>">
+            <button type="submit">Search</button>            
+        </form>
+        <div style="margin:20px">
+            <a href="manage_participant.php">Reset</a>
+        </div>
+    </div>
+    <div style="text-align:right;">
         <a href="add_participant.php">Add Participant</a>
     </div>
     <table>

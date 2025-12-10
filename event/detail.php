@@ -59,8 +59,10 @@ $stmt->close();
         <p><strong>Location:</strong> <?= htmlspecialchars($event['location']) ?></p>
     </div>
     <hr>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
         <h3>Current Attendee List</h3>
+    </div>
+    <div style="text-align:right;">
         <a href="register_participant.php?event_id=<?= $event_id; ?>">Register Participant</a>
     </div>
     <table>

@@ -7,14 +7,36 @@ if(!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// SQL DML with aggregation to get events with attendee counts
-$sql = "SELECT e.*, COUNT(r.registration_id) as attendee_count
-        FROM event e
-        LEFT JOIN registration r ON e.event_id = r.event_id
-        GROUP BY e.event_id
-        ORDER BY e.start_date DESC";
+$search = "";
+// Check if search term exists
+if (isset($_GET['search'])) {
+    $search = trim($_GET['search']);
+}
+// Search by Name 
+if ($search !== "") {
+    // SQL DML to get matching searched event name
+    $sql = "SELECT e.*, COUNT(r.registration_id) as attendee_count
+            FROM event e
+            LEFT JOIN registration r ON e.event_id = r.event_id
+            WHERE e.name = ?
+            GROUP BY e.event_id
+            ORDER BY e.start_date DESC";
 
-$result = $conn->query($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $search);
+    $stmt->execute();
+    $result = $stmt->get_result();
+}
+else {
+    // SQL DML with aggregation to get events with attendee counts
+    $sql = "SELECT e.*, COUNT(r.registration_id) as attendee_count
+            FROM event e
+            LEFT JOIN registration r ON e.event_id = r.event_id
+            GROUP BY e.event_id
+            ORDER BY e.start_date DESC";
+    $result = $conn->query($sql);
+}
+
 $events = [];
 while ($row = $result->fetch_assoc()) {
     $events[] = $row;
@@ -43,7 +65,16 @@ while ($row = $result->fetch_assoc()) {
 </nav>
 <div class="container">
     <h1>Manage Events</h1>
-    <div style="margin-bottom: 20px; text-align: right;">
+    <div>
+        <form method="GET" action="">
+            <input type="text" name="search" placeholder="Search event name" value="<?= htmlspecialchars($search) ?>">
+            <button type="submit">Search</button>            
+        </form>
+        <div style="margin:20px">
+            <a href="manage_event.php">Reset</a>
+        </div>
+    </div>
+    <div style="text-align:right;">
         <a href="add_event.php">Add Event</a>
     </div>
     <table>
